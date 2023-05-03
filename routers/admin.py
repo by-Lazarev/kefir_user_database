@@ -1,4 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm.session import Session
+
+from db import schemas
+from db.database import get_db
+from db import db_user
 
 router = APIRouter(
     prefix="/private",
@@ -18,10 +23,11 @@ def get_all_users():
 @router.post(
     "/users",
     summary="Создание пользователя",
-    description="Здесь возможно занести в базу нового пользователя с минимальной информацией о нем"
+    description="Здесь возможно занести в базу нового пользователя с минимальной информацией о нем",
+    response_model=schemas.PrivateDetailUserResponseModel
 )
-def add_user():
-    return {"msg": "OK"}
+def create_user(request: schemas.PrivateCreateUserModel, db: Session = Depends(get_db)):
+    return db_user.create_user(request, db)
 
 
 @router.get(
@@ -45,7 +51,8 @@ def delete_user_by_id():
 @router.patch(
     "/users/{user_id}",
     summary="Изменение информации о пользователе",
-    description="Здесь администратор может изменить любую информацию о пользователе"
+    description="Здесь администратор может изменить любую информацию о пользователе",
+    response_model=schemas.PrivateUpdateUserModel
 )
-def update_user_by_id():
+def update_user_by_id(user_id: int, request: schemas.PrivateUpdateUserModel):
     return {"msg": "OK"}
