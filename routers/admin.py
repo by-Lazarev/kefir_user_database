@@ -16,8 +16,8 @@ router = APIRouter(
     summary="Постраничное получение кратких данных обо всех пользователях",
     description="Здесь находится вся информация, доступная пользователю о других пользователях"
 )
-def get_all_users():
-    return {"msg": "OK"}
+def read_all_users(db: Session = Depends(get_db)):
+    return db_user.get_all_users(db)
 
 
 @router.post(
@@ -31,28 +31,28 @@ def create_user(request: schemas.PrivateCreateUserModel, db: Session = Depends(g
 
 
 @router.get(
-    "/users/{user_id}",
+    "/users/{pk}",
     summary="Детальное получение информации о пользователе",
     description="Здесь администратор может увидеть всю существующую пользовательскую информацию"
 )
-def get_user_by_id():
+def read_user_by_id(pk: int):
     return {"msg": "OK"}
 
 
 @router.delete(
-    "/users/{user_id}",
+    "/users/{pk}",
     summary="Удаление пользователя",
     description="Удаление пользователя"
 )
-def delete_user_by_id():
+def delete_user_by_id(pk: int):
     return {"msg": "OK"}
 
 
 @router.patch(
-    "/users/{user_id}",
+    "/users/{pk}",
     summary="Изменение информации о пользователе",
     description="Здесь администратор может изменить любую информацию о пользователе",
     response_model=schemas.PrivateUpdateUserModel
 )
-def update_user_by_id(user_id: int, request: schemas.PrivateUpdateUserModel):
+def update_user_by_id(pk: int, request: schemas.PrivateUpdateUserModel):
     return {"msg": "OK"}

@@ -1,5 +1,7 @@
 from fastapi import APIRouter
 
+from db import schemas
+
 router = APIRouter(
     tags=["auth"]
 )
@@ -8,9 +10,10 @@ router = APIRouter(
 @router.post(
     "/login",
     summary="Вход в систему",
-    description="После успешного входа в систему необходимо установить Cookies для пользователя"
+    description="После успешного входа в систему необходимо установить Cookies для пользователя",
+    response_model=schemas.CurrentUserResponseModel
 )
-def login():
+def login(request: schemas.LoginModel):
     return {"msg": "OK"}
 
 
