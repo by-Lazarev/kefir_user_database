@@ -1,10 +1,11 @@
 from sqlalchemy.orm.session import Session
+from fastapi import HTTPException, status
 
-from db.schemas import PrivateCreateUserModel
+from db import schemas
 from db.models import DbUser
 
 
-def create_user(request: PrivateCreateUserModel, db: Session):
+def create_user(request: schemas.PrivateCreateUserModel, db: Session):
     new_user = DbUser(
         first_name=request.first_name,
         second_name=request.second_name,
@@ -22,9 +23,27 @@ def create_user(request: PrivateCreateUserModel, db: Session):
     return new_user
 
 
-def get_all_users(db: Session):
+def read_all_users(db: Session):
     return db.query(DbUser).all()
 
 
-def get_user_by_id(db: Session, user_id: int):
-    pass
+def read_user_by_id(db: Session, user_id: int):
+    user = db.query(DbUser).filter(DbUser.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with id {user_id} not found")
+    return user
+
+
+def update_user_by_id(db: Session, user_id: int, request: schemas.PrivateUpdateUserModel):
+    user = db.query(DbUser).filter(DbUser.id == user_id)
+    if not user.first():
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with id {user_id} not found")
+    user.update({
+        DbUser.username: request.username,
+        DbUser.email: request.email,
+        DbUser.password: hash.bcrypt(request.password)
+    })
+    db.commit()
+    return read_user_by_id(db, user.id)

@@ -2,6 +2,15 @@ from pydantic import BaseModel
 from datetime import date
 
 
+class ErrorResponseModel(BaseModel):
+    code: int
+    message: str
+
+
+class CodelessErrorResponseModel(BaseModel):
+    message: str = "Что-то пошло не так, мы уже исправляем эту ошибку"
+
+
 class CitiesHintModel(BaseModel):
     id: int
     name: str
