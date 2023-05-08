@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, Response
 from sqlalchemy.orm.session import Session
 
+from handlers import handlers
 from db import schemas
 from db.database import get_db
 from db import db_user
@@ -17,8 +18,14 @@ router = APIRouter(
     description="Здесь находится вся информация, доступная пользователю о других пользователях",
     response_model=schemas.PrivateUsersListResponseModel
 )
-def get_all_users(db: Session = Depends(get_db)):
-    return db_user.read_all_users(db)
+def get_all_users(
+        page: int,
+        size: int,
+        db: Session = Depends(get_db)
+):
+    users_data = db_user.read_all_users(db)
+    paginated_data = handlers.convert_to_pagination(users_data, page, size)
+    return paginated_data
 
 
 @router.post(

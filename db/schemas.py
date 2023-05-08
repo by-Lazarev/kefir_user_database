@@ -1,10 +1,13 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, validator, constr
 from datetime import date
+from re import search, I
 
 
 class UserBase(BaseModel):
+
     class Config:
         orm_mode = True
+        use_enum_values = True
 
 
 class ErrorResponseModel(BaseModel):
@@ -25,8 +28,12 @@ class CurrentUserResponseModel(UserBase):
     first_name: str
     last_name: str
     other_name: str
-    email: str
-    phone: str
+    email: EmailStr
+    phone: constr(
+        regex=r"^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$",
+        strip_whitespace=True,
+        min_length=11
+    )
     birthday: date
     is_admin: bool
 
@@ -46,8 +53,12 @@ class PrivateCreateUserModel(UserBase):
     first_name: str
     second_name: str
     other_name: str
-    email: str
-    phone: str
+    email: EmailStr
+    phone: constr(
+        regex=r"^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$",
+        strip_whitespace=True,
+        min_length=11
+    )
     city: int
     additional_info: str
     is_admin: bool
@@ -59,8 +70,12 @@ class PrivateDetailUserResponseModel(UserBase):
     first_name: str
     second_name: str
     other_name: str
-    email: str
-    phone: str
+    email: EmailStr
+    phone: constr(
+        regex=r"^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$",
+        strip_whitespace=True,
+        min_length=11
+    )
     city: int
     additional_info: str
     is_admin: bool
@@ -71,8 +86,12 @@ class PrivateUpdateUserModel(UserBase):
     first_name: str
     second_name: str
     other_name: str
-    email: str
-    phone: str
+    email: EmailStr
+    phone: constr(
+        regex=r"^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$",
+        strip_whitespace=True,
+        min_length=11
+    )
     city: int
     additional_info: str
     is_admin: bool
@@ -91,7 +110,7 @@ class UsersListElementModel(UserBase):
     id: int
     first_name: str
     last_name: str
-    email: str
+    email: EmailStr
 
 
 class PrivateUsersListResponseModel(UserBase):
@@ -103,8 +122,12 @@ class UpdateUserModel(UserBase):
     first_name: str
     last_name: str
     other_name: str
-    email: str
-    phone: str
+    email: EmailStr
+    phone: constr(
+        regex=r"^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$",
+        strip_whitespace=True,
+        min_length=11
+    )
     birthday: date
 
 
@@ -113,8 +136,12 @@ class UpdateUserResponseModel(UserBase):
     first_name: str
     last_name: str
     other_name: str
-    email: str
-    phone: str
+    email: EmailStr
+    phone: constr(
+        regex=r"^(\+7|7|8)?[\s\-]?\(?[489][0-9]{2}\)?[\s\-]?[0-9]{3}[\s\-]?[0-9]{2}[\s\-]?[0-9]{2}$",
+        strip_whitespace=True,
+        min_length=11
+    )
     birthday: date
 
 
