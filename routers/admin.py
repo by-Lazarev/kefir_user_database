@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response
 from sqlalchemy.orm.session import Session
 
 from db import schemas
@@ -14,7 +14,8 @@ router = APIRouter(
 @router.get(
     "/users",
     summary="Постраничное получение кратких данных обо всех пользователях",
-    description="Здесь находится вся информация, доступная пользователю о других пользователях"
+    description="Здесь находится вся информация, доступная пользователю о других пользователях",
+    response_model=schemas.PrivateUsersListResponseModel
 )
 def get_all_users(db: Session = Depends(get_db)):
     return db_user.read_all_users(db)
@@ -44,10 +45,12 @@ def get_user_by_id(pk: int, db: Session = Depends(get_db)):
 @router.delete(
     "/users/{pk}",
     summary="Удаление пользователя",
-    description="Удаление пользователя"
+    description="Удаление пользователя",
+    status_code=204
 )
-def delete_user_by_id(pk: int):
-    return {"msg": "OK"}
+def delete_user_by_id(pk: int, db: Session = Depends(get_db)):
+    if db_user.delete_user(db, pk) == "OK":
+        return Response(status_code=204)
 
 
 @router.patch(

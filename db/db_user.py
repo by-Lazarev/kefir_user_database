@@ -40,10 +40,21 @@ def update_user_by_id(db: Session, user_id: int, request: schemas.PrivateUpdateU
     if not user.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"User with id {user_id} not found")
+
     user.update({
         DbUser.username: request.username,
         DbUser.email: request.email,
-        DbUser.password: hash.bcrypt(request.password)
+        DbUser.password: request.password
     })
     db.commit()
-    return read_user_by_id(db, user.id)
+    return read_user_by_id(db, user.id)  # TODO: need to check whether the req. params is NULL
+
+
+def delete_user(db: Session, user_id: int):
+    user = db.query(DbUser).filter(DbUser.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"User with id {user_id} not found")
+    db.delete(user)
+    db.commit()
+    return "OK"

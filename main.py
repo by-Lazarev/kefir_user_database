@@ -2,6 +2,8 @@ from fastapi import FastAPI
 
 from routers import admin, user
 from auth import auth
+from db import models
+from db.database import engine
 
 description = """
 User Database provides API to CRUD user profiles.
@@ -51,3 +53,5 @@ app = FastAPI(
 app.include_router(auth.router)
 app.include_router(user.router)
 app.include_router(admin.router)
+
+models.Base.metadata.create_all(engine)

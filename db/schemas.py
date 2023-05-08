@@ -2,6 +2,11 @@ from pydantic import BaseModel
 from datetime import date
 
 
+class UserBase(BaseModel):
+    class Config:
+        orm_mode = True
+
+
 class ErrorResponseModel(BaseModel):
     code: int
     message: str
@@ -11,12 +16,12 @@ class CodelessErrorResponseModel(BaseModel):
     message: str = "Что-то пошло не так, мы уже исправляем эту ошибку"
 
 
-class CitiesHintModel(BaseModel):
+class CitiesHintModel(UserBase):
     id: int
     name: str
 
 
-class CurrentUserResponseModel(BaseModel):
+class CurrentUserResponseModel(UserBase):
     first_name: str
     last_name: str
     other_name: str
@@ -26,18 +31,18 @@ class CurrentUserResponseModel(BaseModel):
     is_admin: bool
 
 
-class LoginModel(BaseModel):
+class LoginModel(UserBase):
     login: str
     password: str
 
 
-class PaginatedMetaDataModel(BaseModel):
+class PaginatedMetaDataModel(UserBase):
     total: int
     page: int
     size: int
 
 
-class PrivateCreateUserModel(BaseModel):
+class PrivateCreateUserModel(UserBase):
     first_name: str
     second_name: str
     other_name: str
@@ -49,7 +54,7 @@ class PrivateCreateUserModel(BaseModel):
     password: str
 
 
-class PrivateDetailUserResponseModel(BaseModel):
+class PrivateDetailUserResponseModel(UserBase):
     id: int
     first_name: str
     second_name: str
@@ -61,7 +66,7 @@ class PrivateDetailUserResponseModel(BaseModel):
     is_admin: bool
 
 
-class PrivateUpdateUserModel(BaseModel):
+class PrivateUpdateUserModel(UserBase):
     id: int
     first_name: str
     second_name: str
@@ -73,28 +78,28 @@ class PrivateUpdateUserModel(BaseModel):
     is_admin: bool
 
 
-class PrivateUsersListHintMetaModel(BaseModel):
+class PrivateUsersListHintMetaModel(UserBase):
     city: list[CitiesHintModel]
 
 
-class PrivateUsersListMetaDataModel(BaseModel):
+class PrivateUsersListMetaDataModel(UserBase):
     pagination: PaginatedMetaDataModel
     hint: PrivateUsersListHintMetaModel
 
 
-class UsersListElementModel(BaseModel):
+class UsersListElementModel(UserBase):
     id: int
     first_name: str
     last_name: str
     email: str
 
 
-class PrivateUsersListResponseModel(BaseModel):
+class PrivateUsersListResponseModel(UserBase):
     data: UsersListElementModel
     meta: PrivateUsersListMetaDataModel
 
 
-class UpdateUserModel(BaseModel):
+class UpdateUserModel(UserBase):
     first_name: str
     last_name: str
     other_name: str
@@ -103,7 +108,7 @@ class UpdateUserModel(BaseModel):
     birthday: date
 
 
-class UpdateUserResponseModel(BaseModel):
+class UpdateUserResponseModel(UserBase):
     id: int
     first_name: str
     last_name: str
@@ -113,10 +118,10 @@ class UpdateUserResponseModel(BaseModel):
     birthday: date
 
 
-class UsersListMetaDataModel(BaseModel):
+class UsersListMetaDataModel(UserBase):
     pagination: PaginatedMetaDataModel
 
 
-class UsersListResponseModel(BaseModel):
+class UsersListResponseModel(UserBase):
     date: UsersListElementModel
     meta: UsersListMetaDataModel
