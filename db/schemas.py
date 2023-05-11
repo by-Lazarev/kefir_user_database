@@ -51,7 +51,7 @@ class PaginatedMetaDataModel(UserBase):
 
 class PrivateCreateUserModel(UserBase):
     first_name: str
-    second_name: str
+    last_name: str
     other_name: str
     email: EmailStr
     phone: constr(
@@ -68,7 +68,7 @@ class PrivateCreateUserModel(UserBase):
 class PrivateDetailUserResponseModel(UserBase):
     id: int
     first_name: str
-    second_name: str
+    last_name: str
     other_name: str
     email: EmailStr
     phone: constr(
@@ -84,7 +84,7 @@ class PrivateDetailUserResponseModel(UserBase):
 class PrivateUpdateUserModel(UserBase):
     id: int
     first_name: str
-    second_name: str
+    last_name: str
     other_name: str
     email: EmailStr
     phone: constr(
@@ -114,7 +114,7 @@ class UsersListElementModel(UserBase):
 
 
 class PrivateUsersListResponseModel(UserBase):
-    data: UsersListElementModel
+    data: list[UsersListElementModel]
     meta: PrivateUsersListMetaDataModel
 
 
@@ -150,5 +150,5 @@ class UsersListMetaDataModel(UserBase):
 
 
 class UsersListResponseModel(UserBase):
-    date: UsersListElementModel
+    data: list[UsersListElementModel]
     meta: UsersListMetaDataModel

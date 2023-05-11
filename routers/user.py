@@ -4,6 +4,7 @@ from sqlalchemy.orm.session import Session
 from db import schemas
 from db import db_user
 from db.database import get_db
+from handlers import handlers
 
 router = APIRouter(
     prefix="/users",
@@ -36,7 +37,9 @@ def update_user(request: schemas.UpdateUserModel):
     "",
     summary="Постраничное получение кратких данных обо всех пользователях",
     description="Здесь находится вся информация, доступная пользователю о других пользователях",
-    # response_model=schemas.UsersListResponseModel  # TODO: need to add method to slice objects
+    response_model=schemas.UsersListResponseModel
 )
-def read_current_user(page=1, size=10, db: Session = Depends(get_db)):  # Add query to control given nums
-    return db_user.read_all_users(db)
+def read_current_user(page: int = 1, size: int = 10, db: Session = Depends(get_db)):
+    users_data = db_user.read_all_users(db)
+    paginated_data = handlers.convert_to_pagination(users_data, page, size)
+    return paginated_data

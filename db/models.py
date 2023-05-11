@@ -8,7 +8,7 @@ class DbUser(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True, unique=True, index=True)
     first_name = Column(String)
-    second_name = Column(String)
+    last_name = Column(String)
     other_name = Column(String)
     email = Column(String, unique=True)
     phone = Column(String)

@@ -8,7 +8,7 @@ from db.models import DbUser
 def create_user(request: schemas.PrivateCreateUserModel, db: Session):
     new_user = DbUser(
         first_name=request.first_name,
-        second_name=request.second_name,
+        last_name=request.last_name,
         other_name=request.other_name,
         email=request.email,
         phone=request.phone,

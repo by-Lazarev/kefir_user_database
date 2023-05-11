@@ -19,8 +19,8 @@ router = APIRouter(
     response_model=schemas.PrivateUsersListResponseModel
 )
 def get_all_users(
-        page: int,
-        size: int,
+        page: int = 1,
+        size: int = 10,
         db: Session = Depends(get_db)
 ):
     users_data = db_user.read_all_users(db)
