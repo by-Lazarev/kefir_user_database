@@ -1,6 +1,6 @@
-from pydantic import BaseModel, EmailStr, validator, constr
+from pydantic import BaseModel, EmailStr, constr
 from datetime import date
-from re import search, I
+from fastapi import HTTPException
 
 
 class UserBase(BaseModel):
